@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS order_details;
-DROP TABLE IF EXISTS orders;
+-- DROP TABLE IF EXISTS order_details;
+-- DROP TABLE IF EXISTS orders;
 
-CREATE TABLE orders
+CREATE TABLE IF NOT EXISTS orders
 (
     id               BIGSERIAL PRIMARY KEY,
     order_number     VARCHAR(13)    NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE orders
     delivery_type    VARCHAR(20)    NOT NULL
 );
 
-CREATE TABLE order_details
+CREATE TABLE IF NOT EXISTS order_details
 (
     id           BIGSERIAL PRIMARY KEY,
     product_code BIGINT         NOT NULL,
