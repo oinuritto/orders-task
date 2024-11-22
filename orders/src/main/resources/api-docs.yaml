@@ -1,0 +1,301 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Orders
+  description: Controller for orders
+paths:
+  /orders:
+    post:
+      tags:
+      - Orders
+      summary: Create order
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestDto"
+        required: true
+      responses:
+        "201":
+          description: Order created
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /orders/{id}:
+    get:
+      tags:
+      - Orders
+      summary: Get order by ID
+      operationId: getOrderById
+      parameters:
+      - name: id
+        in: path
+        description: Order ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "200":
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderWithDetailsResponseDto"
+  /orders/search:
+    get:
+      tags:
+      - Orders
+      summary: Get orders by date and total amount greater than specified value
+      operationId: getOrdersByDateAfterAndTotalAmountGreaterThan
+      parameters:
+      - name: startDate
+        in: query
+        description: Start date
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: minTotalAmount
+        in: query
+        description: Total amount from
+        required: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: Orders found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDto"
+  /orders/exclude-product:
+    get:
+      tags:
+      - Orders
+      summary: Get orders excluding a specific product and with a date between the
+        specified range
+      operationId: getOrdersExcludingProduct
+      parameters:
+      - name: productCode
+        in: query
+        description: Excluding product code
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: startDate
+        in: query
+        description: Start date
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: endDate
+        in: query
+        description: End date
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Orders found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponseDto"
+components:
+  schemas:
+    OrderDetailsRequestDto:
+      required:
+      - productName
+      - quantity
+      - unitPrice
+      type: object
+      properties:
+        productCode:
+          minimum: 0
+          type: integer
+          description: Product code
+          format: int64
+          example: 1
+        productName:
+          type: string
+          description: Product name
+          example: Product
+        quantity:
+          type: integer
+          description: Quantity
+          format: int32
+          example: 1
+        unitPrice:
+          type: number
+          description: Unit price
+          example: 100.0
+      description: Order details request
+    OrderRequestDto:
+      required:
+      - deliveryAddress
+      - deliveryType
+      - items
+      - paymentType
+      - recipient
+      type: object
+      properties:
+        recipient:
+          type: string
+          description: Recipient name
+          example: John Doe
+        deliveryAddress:
+          type: string
+          description: Delivery address
+          example: "Moscow, Red Square"
+        paymentType:
+          type: string
+          description: Payment type
+          example: Cash
+        deliveryType:
+          type: string
+          description: Delivery type
+          example: Courier
+        items:
+          type: array
+          description: Order items
+          items:
+            $ref: "#/components/schemas/OrderDetailsRequestDto"
+      description: Order info
+    ExceptionDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: Order not found
+      description: Exception response
+    OrderDetailsResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+          format: int64
+          example: 1
+        productCode:
+          type: integer
+          description: Product code
+          format: int64
+          example: 1
+        productName:
+          type: string
+          description: Product name
+          example: Product
+        quantity:
+          type: integer
+          description: Quantity
+          format: int32
+          example: 1
+        unitPrice:
+          type: number
+          description: Unit price
+          example: 100.0
+      description: Order details response
+    OrderWithDetailsResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+          format: int64
+          example: 1
+        orderNumber:
+          type: string
+          description: Order number
+          example: "1111120241231"
+        totalAmount:
+          type: number
+          description: Total amount
+          example: 100.0
+        orderDate:
+          type: string
+          description: Order date
+          format: date
+          example: 2021-09-01
+        recipient:
+          type: string
+          description: Recipient name
+          example: John Doe
+        deliveryAddress:
+          type: string
+          description: Delivery address
+          example: "Moscow, Red Square"
+        paymentType:
+          type: string
+          description: Payment type
+          example: Cash
+        deliveryType:
+          type: string
+          description: Delivery type
+          example: Courier
+        items:
+          type: array
+          description: Order items
+          items:
+            $ref: "#/components/schemas/OrderDetailsResponseDto"
+      description: Order with details response
+    OrderResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+          format: int64
+          example: 1
+        orderNumber:
+          type: string
+          description: Order number
+          example: "1111120241231"
+        totalAmount:
+          type: number
+          description: Total amount
+          example: 100.0
+        orderDate:
+          type: string
+          description: Order date
+          format: date
+          example: 2021-09-01
+        recipient:
+          type: string
+          description: Recipient name
+          example: John Doe
+        deliveryAddress:
+          type: string
+          description: Delivery address
+          example: "Moscow, Red Square"
+        paymentType:
+          type: string
+          description: Payment type
+          example: Cash
+        deliveryType:
+          type: string
+          description: Delivery type
+          example: Courier
+      description: Order response

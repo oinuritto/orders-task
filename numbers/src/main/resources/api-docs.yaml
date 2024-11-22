@@ -1,0 +1,25 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+tags:
+- name: Order numbers
+  description: Generate and get order number
+paths:
+  /numbers:
+    get:
+      tags:
+      - Order numbers
+      summary: Get generated order number
+      operationId: getOrderNumbers
+      responses:
+        "200":
+          description: Succesfully got generated order number
+          content:
+            '*/*':
+              schema:
+                type: string
+components: {}
