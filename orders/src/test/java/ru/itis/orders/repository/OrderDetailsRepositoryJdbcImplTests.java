@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import ru.itis.orders.entity.OrderDetails;
-import ru.itis.orders.repository.OrderDetailsRepositoryJdbcImpl;
 
 import java.math.BigDecimal;
 import java.util.Collections;

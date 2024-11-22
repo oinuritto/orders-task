@@ -15,8 +15,6 @@ import ru.itis.orders.entity.OrderDetails;
 import ru.itis.orders.exception.NotFoundException;
 import ru.itis.orders.repository.OrderDetailsRepository;
 import ru.itis.orders.repository.OrdersRepository;
-import ru.itis.orders.service.NumbersServiceClient;
-import ru.itis.orders.service.OrdersServiceImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
