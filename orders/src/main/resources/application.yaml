@@ -11,6 +11,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate.ddl-auto: none
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
 
 number-generate-service:
   url: ${NUMBERS_SERVICE_URL}
